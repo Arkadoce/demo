@@ -17,6 +17,10 @@ public class BestiaryService {
         this.bestiaryRepository = bestiaryRepository;
     }
 
+    public List<Monster> getAll() {
+        return bestiaryRepository.findAll();
+    }
+
     public List<Monster> searchMonsterByTypeAndChallengeRating(MonsterType type, Double challengeRating) {
         if (type != null && challengeRating != null) {
             return bestiaryRepository.findByTypeAndChallengeRating(type, challengeRating);

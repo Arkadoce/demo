@@ -37,5 +37,10 @@ public class BestiaryController {
     public List<Monster> searchByName(@RequestParam(required = false) String name) {
         return bestiaryService.searchMonsterByNameContainingIgnoreCase(name);
     }
+
+    @GetMapping
+    public List<Monster> getAllMonsters() {
+        return bestiaryService.getAll();
+    }
 }
 
