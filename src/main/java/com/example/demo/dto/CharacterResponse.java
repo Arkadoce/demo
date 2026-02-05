@@ -5,5 +5,6 @@ public record CharacterResponse(
         String name,
         int level,
         int proficiencyBonus,
+        int exp,
         StatsDto stats
 ){}

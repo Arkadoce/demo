@@ -10,6 +10,7 @@ public class CharacterMapper {
             entity.getName(),
             entity.getLevel(),
             entity.bm(),
+            entity.getExp(),
             StatsMapper.toStatsDto(entity.getStats())
         );
 

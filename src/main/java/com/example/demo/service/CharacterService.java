@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.CharacterEntity;
+import com.example.demo.entity.Race.RaceEntity;
 import com.example.demo.entity.Stats;
 import com.example.demo.repository.CharacterRepository;
+import com.example.demo.repository.RaceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,22 +14,34 @@ import java.util.NoSuchElementException;
 public class CharacterService {
 
     private final CharacterRepository repo;
+    private final ExpService expService;
+    private final RaceRepository raceRepo;
 
-    public CharacterService(CharacterRepository repo) {
+
+    public CharacterService(CharacterRepository repo, ExpService expService,RaceRepository raceRepo) {
         this.repo = repo;
+        this.raceRepo=raceRepo;
+        this.expService = expService;
     }
 
     // CREATE
-    public CharacterEntity create(String name, int level, Stats stats) {
+    public CharacterEntity create(String name, int level, Stats stats,Long raceId) {
         validateName(name);
         validateLevel(level);
+
+        if (raceId == null) {
+            throw new IllegalArgumentException("raceId is required");
+        }
+
+        RaceEntity race = raceRepo.findById(raceId)
+                .orElseThrow(() -> new NoSuchElementException("Race not found: " + raceId));
 
         if (stats == null) {
             // дефолтные статы, если не передали
             stats = new Stats(10, 10, 10, 10, 10, 10);
         }
 
-        CharacterEntity entity = new CharacterEntity(name, level, stats);
+        CharacterEntity entity = new CharacterEntity(name, level, stats, race);
         return repo.save(entity);
     }
 
@@ -71,6 +85,16 @@ public class CharacterService {
         repo.deleteById(id);
     }
 
+    //EXP
+    public CharacterEntity gainExp(Long id,int gainedExp){
+        CharacterEntity entity=get(id);
+
+        int newExp=entity.getExp()+gainedExp;
+        validateExp(newExp);
+
+        entity.setExp(newExp);
+        return repo.save(entity);
+    }
     // LEVEL UP
     public CharacterEntity levelUp(Long id) {
         CharacterEntity entity = get(id);
@@ -78,7 +102,7 @@ public class CharacterService {
         int next = entity.getLevel() + 1;
         validateLevel(next);
 
-        entity.lvlUp();
+        entity.setLevel(next);
         return repo.save(entity);
     }
 
@@ -96,6 +120,11 @@ public class CharacterService {
     private void validateLevel(int level) {
         if (level < 1 || level > 20) {
             throw new IllegalArgumentException("level must be in range 1..20");
+        }
+    }
+    private void validateExp(int exp){
+        if(exp<0 || exp > 355000){
+            throw new IllegalArgumentException("exp must be in range");
         }
     }
 }

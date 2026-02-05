@@ -1,30 +1,41 @@
 package com.example.demo.entity;
 
+import com.example.demo.entity.Race.RaceEntity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="characters")
+@Table(name="characters",
+        indexes = {
+                @Index(name="idx_character_race", columnList="race_id")
+        }
+)
 public class CharacterEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     protected CharacterEntity(){};
 
-    public CharacterEntity(String name, int level,Stats stats){
+    public CharacterEntity(String name, int level,Stats stats,RaceEntity race){
         this.name=name;
         this.level=level;
         this.stats=stats;
-
+        this.race = race;
     }
 
     @Column(nullable=false)
     private String name;
 
     private int level;
+    private int exp;
+
 
     @Embedded
     private Stats stats;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "race_id", nullable = false)
+    private RaceEntity race;
 
     public int bm(){
         if (level >= 17) return 6;
@@ -33,40 +44,21 @@ public class CharacterEntity {
         if (level >= 5)  return 3;
         return 2;
     }
-
-    public String getName(){
-        return name;
-    }
-
-    public int getLevel(){
-        return level;
-    }
-
-    public Stats getStats() {
-        return stats;
-    }
-
+    public RaceEntity getRace() { return race; }
+    public void setRace(RaceEntity race) { this.race = race; }
+    public String getName(){return name;}
+    public int getLevel(){return level;}
+    public Stats getStats() {return stats;}
+    public int getExp() {return exp;}
+    public void setExp(int exp) {this.exp = exp;}
     public void setName(String name) {
         this.name = name;
     }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
+    public void setLevel(int level) {this.level = level;}
     public void setStats(Stats stats) {
         this.stats = stats;
     }
-
-    public void lvlUp() {
-        level++;
-    }
-
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 }

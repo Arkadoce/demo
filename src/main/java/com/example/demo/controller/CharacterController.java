@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/characters")
 public class CharacterController {
@@ -26,7 +27,8 @@ public class CharacterController {
         CharacterEntity saved = service.create(
                 req.name(),
                 req.level(),
-                StatsMapper.toStats(req.stats())
+                StatsMapper.toStats(req.stats()),
+                req.raceId()
         );
         return CharacterMapper.toResponse(saved);
     }
@@ -57,4 +59,11 @@ public class CharacterController {
     public CharacterResponse levelUp(@PathVariable Long id) {
         return CharacterMapper.toResponse(service.levelUp(id));
     }
+
+    //Gain Exp
+    @PostMapping("/{id}/gain-exp")
+    public CharacterResponse gainExp(@PathVariable Long id, @RequestParam int amount) {
+        return CharacterMapper.toResponse(service.gainExp(id, amount));
+    }
+
 }
