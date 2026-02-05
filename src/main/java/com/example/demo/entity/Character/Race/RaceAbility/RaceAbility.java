@@ -1,10 +1,12 @@
-package com.example.demo.entity.Race.RaceAbility;
+package com.example.demo.entity.Character.Race.RaceAbility;
 
-import com.example.demo.entity.Race.RaceEntity;
+import com.example.demo.entity.Character.Race.RaceEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "race_abilities")
+@Getter
 public class RaceAbility {
 
     @Id
@@ -24,18 +26,16 @@ public class RaceAbility {
     @JoinColumn(name = "race_id", nullable = false)
     private RaceEntity race;
 
-    protected RaceAbility(){}
+    protected RaceAbility() {
+    }
 
-    public RaceAbility(String name, String description, AbilityType type){
+    public RaceAbility(String name, String description, AbilityType type) {
         this.name = name;
         this.description = description;
         this.type = type;
     }
 
-   public void setRace(RaceEntity race){
+    public void setRace(RaceEntity race) {
         this.race = race;
     }
-
-    public String getName(){return name;}
-    public String getDescription(){return description;}
 }

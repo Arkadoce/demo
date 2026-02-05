@@ -1,4 +1,4 @@
-package com.example.demo.entity.Race.RaceAbility;
+package com.example.demo.entity.Character.Race.RaceAbility;
 
 public enum AbilityType {
     PASSIVE,

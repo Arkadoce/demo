@@ -10,12 +10,12 @@ public class StatsMapper {
             return new Stats(10, 10, 10, 10, 10, 10);
         }
         return new Stats(
-                dto.strength(),
-                dto.dexterity(),
-                dto.constitution(),
-                dto.intelligence(),
-                dto.wisdom(),
-                dto.charisma()
+                dto.str(),
+                dto.dex(),
+                dto.con(),
+                dto.intel(),
+                dto.wis(),
+                dto.cha()
         );
     }
 

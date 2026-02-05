@@ -1,6 +1,7 @@
-package com.example.demo.entity;
+package com.example.demo.entity.Character;
 
-import com.example.demo.entity.Race.RaceEntity;
+import com.example.demo.entity.Character.Race.RaceEntity;
+import com.example.demo.entity.Stats;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,7 +17,7 @@ public class CharacterEntity {
 
     protected CharacterEntity(){};
 
-    public CharacterEntity(String name, int level,Stats stats,RaceEntity race){
+    public CharacterEntity(String name, int level, Stats stats, RaceEntity race){
         this.name=name;
         this.level=level;
         this.stats=stats;

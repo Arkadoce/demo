@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.CreateCharacterRequest;
 import com.example.demo.dto.CharacterResponse;
-import com.example.demo.entity.CharacterEntity;
+import com.example.demo.entity.Character.CharacterEntity;
 import com.example.demo.mapper.CharacterMapper;
 import com.example.demo.mapper.StatsMapper;
 import com.example.demo.service.CharacterService;

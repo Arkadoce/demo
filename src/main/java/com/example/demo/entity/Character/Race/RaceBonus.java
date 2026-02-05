@@ -1,12 +1,14 @@
-package com.example.demo.entity.Race;
+package com.example.demo.entity.Character.Race;
 
 
-import com.example.demo.entity.Race.model.BonusType;
+import com.example.demo.entity.Character.Race.model.BonusType;
 import com.example.demo.entity.model.StatType;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "race_bonus")
+@Getter
 public class RaceBonus {
 
     @Id

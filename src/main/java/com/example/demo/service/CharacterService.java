@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.CharacterEntity;
-import com.example.demo.entity.Race.RaceEntity;
+import com.example.demo.entity.Character.CharacterEntity;
+import com.example.demo.entity.Character.Race.RaceEntity;
 import com.example.demo.entity.Stats;
 import com.example.demo.repository.CharacterRepository;
 import com.example.demo.repository.RaceRepository;
