@@ -1,10 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Monster;
+import com.example.demo.entity.bestiary.Monster;
 import com.example.demo.entity.model.MonsterType;
 import com.example.demo.repository.BestiaryRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
