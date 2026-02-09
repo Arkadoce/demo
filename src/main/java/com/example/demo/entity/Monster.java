@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import com.example.demo.entity.model.MonsterType;
 import com.example.demo.entity.model.Size;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
@@ -32,14 +33,18 @@ public class Monster {
     private int armorClass;
     private Double challengeRating;
 
-    public int getHealth() { return health; }
-    public void setHealth(int health) { this.health = health; }
+    public Monster(String name, String description, Stats stats, Size size, MonsterType type, int health, int armorClass, Double challengeRating) {
+        this.name = name;
+        this.description = description;
+        this.stats = stats;
+        this.size = size;
+        this.type = type;
+        this.health = health;
+        this.armorClass = armorClass;
+        this.challengeRating = challengeRating;
+    }
 
-    public int getArmorClass() { return armorClass; }
-    public void setArmorClass(int armorClass) { this.armorClass = armorClass; }
-
-    public Double getChallengeRating() { return challengeRating; }
-    public void setChallengeRating(Double challengeRating) {this.challengeRating = challengeRating; }
+    public Long getId() { return id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -53,11 +58,21 @@ public class Monster {
     public Stats getStats() { return stats; }
     public void setStats(Stats stats) { this.stats = stats; }
 
-    public Long getId() { return id; }
-
     public Size getSize() { return size; }
     public void setSize(Size size) { this.size = size; }
 
     public MonsterType getType() { return type; }
     public void setType(MonsterType type) { this.type = type; }
+
+    public int getHealth() { return health; }
+    public void setHealth(int health) { this.health = health; }
+
+    public int getArmorClass() { return armorClass; }
+    public void setArmorClass(int armorClass) { this.armorClass = armorClass; }
+
+    public Double getChallengeRating() { return challengeRating; }
+    public void setChallengeRating(Double challengeRating) { this.challengeRating = challengeRating; }
+
+    public MonsterType getMonsterType() { return type; }
+    public void setMonsterType(MonsterType type) { this.type = type; }
 }
