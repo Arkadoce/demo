@@ -1,14 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Monster;
+import com.example.demo.entity.bestiary.Monster;
 import com.example.demo.entity.model.MonsterType;
-import com.example.demo.repository.BestiaryRepository;
 import com.example.demo.service.BestiaryService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 

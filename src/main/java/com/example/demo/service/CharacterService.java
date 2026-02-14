@@ -27,7 +27,7 @@ public class CharacterService {
             stats = new Stats(10, 10, 10, 10, 10, 10);
         }
 
-        CharacterEntity entity = new CharacterEntity(name, level, stats);
+        CharacterEntity entity = new CharacterEntity(name, stats, level);
         return repo.save(entity);
     }
 
