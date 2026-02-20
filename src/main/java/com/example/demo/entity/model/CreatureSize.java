@@ -1,5 +1,5 @@
 package com.example.demo.entity.model;
 
-public enum Size {
+public enum CreatureSize {
     TINY, SMALL, MEDIUM, LARGE, HUGE
 }

@@ -1,8 +1,10 @@
 package com.example.demo.mapper;
 
 import com.example.demo.dto.MonsterDto;
-import com.example.demo.entity.Monster;
+import com.example.demo.entity.bestiary.Monster;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MonsterMapper {
     public static Monster toMonster(MonsterDto dto) {
         if (dto == null) {
@@ -16,7 +18,8 @@ public class MonsterMapper {
                 dto.monsterType(),
                 dto.health(),
                 dto.armorClass(),
-                dto.challengeRating()
+                dto.challengeRating(),
+                dto.speed()
         );
     }
 
@@ -29,10 +32,11 @@ public class MonsterMapper {
                 monster.getDescription(),
                 monster.getStats(),
                 monster.getSize(),
-                monster.getMonsterType(),
-                monster.getHealth(),
+                monster.getType(),
+                monster.getMaxHp(),
                 monster.getArmorClass(),
-                monster.getChallengeRating()
+                monster.getChallengeRating(),
+                monster.getSpeed()
         );
     }
 }

@@ -1,6 +1,10 @@
 package com.example.demo.entity.initiativeTracker;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 public class CombatParticipant {
@@ -8,13 +12,17 @@ public class CombatParticipant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotBlank
     private String name;
+    @Positive
     private int initiative;
+    @Positive
     private int maxHp;
+    @PositiveOrZero
     private int currentHp;
 
     @ManyToOne
+    @Valid
     private Encounter encounter;
 
     public CombatParticipant() {}

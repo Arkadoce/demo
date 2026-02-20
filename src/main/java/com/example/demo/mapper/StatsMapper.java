@@ -2,7 +2,9 @@ package com.example.demo.mapper;
 
 import com.example.demo.dto.StatsDto;
 import com.example.demo.entity.Stats;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StatsMapper {
 
     public static Stats toStats(StatsDto dto) {
