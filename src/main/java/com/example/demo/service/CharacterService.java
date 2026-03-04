@@ -18,6 +18,7 @@ public class CharacterService {
     }
 
     // CREATE
+    /**
     public CharacterEntity create(String name, int level, Stats stats) {
         validateName(name);
         validateLevel(level);
@@ -29,7 +30,7 @@ public class CharacterService {
 
         CharacterEntity entity = new CharacterEntity(name, stats, level);
         return repo.save(entity);
-    }
+    } **/
 
     // READ - list
     public List<CharacterEntity> list() {
@@ -72,6 +73,7 @@ public class CharacterService {
     }
 
     // LEVEL UP
+    /**
     public CharacterEntity levelUp(Long id) {
         CharacterEntity entity = get(id);
 
@@ -80,7 +82,7 @@ public class CharacterService {
 
         entity.lvlUp();
         return repo.save(entity);
-    }
+    } **/
 
     // ===== validators =====
 

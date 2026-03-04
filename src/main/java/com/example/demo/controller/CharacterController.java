@@ -21,6 +21,7 @@ public class CharacterController {
     }
 
     // ===== CREATE =====
+    /**
     @PostMapping
     public CharacterResponse create(@RequestBody CreateCharacterRequest req) {
         CharacterEntity saved = service.create(
@@ -29,7 +30,7 @@ public class CharacterController {
                 StatsMapper.toStats(req.stats())
         );
         return CharacterMapper.toResponse(saved);
-    }
+    } **/
 
     // ===== READ ALL =====
     @GetMapping
@@ -53,8 +54,9 @@ public class CharacterController {
     }
 
     // ===== ACTION: LEVEL UP =====
+    /**
     @PostMapping("/{id}/level-up")
     public CharacterResponse levelUp(@PathVariable Long id) {
         return CharacterMapper.toResponse(service.levelUp(id));
-    }
+    } **/
 }

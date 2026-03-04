@@ -1,12 +1,12 @@
 package com.example.demo.mapper;
 
-import com.example.demo.dto.MonsterDto;
+import com.example.demo.dto.MonsterResponse;
 import com.example.demo.entity.bestiary.Monster;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MonsterMapper {
-    public static Monster toMonster(MonsterDto dto) {
+    public static Monster toMonster(MonsterResponse dto) {
         if (dto == null) {
             return null;
         }
@@ -23,11 +23,11 @@ public class MonsterMapper {
         );
     }
 
-    public static MonsterDto toMonsterDto(Monster monster) {
+    public static MonsterResponse toMonsterDto(Monster monster) {
         if (monster == null) {
             return null;
         }
-        return new MonsterDto(
+        return new MonsterResponse(
                 monster.getName(),
                 monster.getDescription(),
                 monster.getStats(),

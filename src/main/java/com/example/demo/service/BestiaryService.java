@@ -46,7 +46,5 @@ public class BestiaryService {
             return bestiaryRepository.findAll();
         }
     }
-
-    public void createMonster() {}
 }
 
