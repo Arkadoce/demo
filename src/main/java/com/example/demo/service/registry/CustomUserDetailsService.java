@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.registry;
 
 import com.example.demo.repository.registry.UserRepository;
 import lombok.RequiredArgsConstructor;
