@@ -1,14 +1,21 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 
 @Embeddable
 public class Stats {
+    @Positive
     private int Str;
+    @Positive
     private int Dex;
+    @Positive
     private int Con;
+    @Positive
     private int Wis;
+    @Positive
     private int Int;
+    @Positive
     private int Cha;
 
     protected Stats(){}

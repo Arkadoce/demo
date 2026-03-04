@@ -1,30 +1,25 @@
 package com.example.demo.entity;
 
+import com.example.demo.entity.model.CreatureSize;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name="characters")
-public class CharacterEntity {
+public class CharacterEntity extends Creature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    protected CharacterEntity(){};
-
-    public CharacterEntity(String name, int level,Stats stats){
-        this.name=name;
-        this.level=level;
-        this.stats=stats;
-
-    }
-
-    @Column(nullable=false)
-    private String name;
-
+    @Min(1) @Max(20)
     private int level;
 
-    @Embedded
-    private Stats stats;
+    protected CharacterEntity() {};
+
+    public CharacterEntity(String name, Stats stats, int armorClass, int maxHp, int speed, CreatureSize size, int level){
+        super(name,stats,armorClass,maxHp,speed,size);
+        this.level=level;
+    }
 
     public int bm(){
         if (level >= 17) return 6;
@@ -34,39 +29,12 @@ public class CharacterEntity {
         return 2;
     }
 
-    public String getName(){
-        return name;
-    }
-
     public int getLevel(){
         return level;
     }
-
-    public Stats getStats() {
-        return stats;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public void setStats(Stats stats) {
-        this.stats = stats;
-    }
-
-    public void lvlUp() {
-        level++;
-    }
+    public void setLevel(int level) { this.level = level; }
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 }
