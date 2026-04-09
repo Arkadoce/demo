@@ -5,14 +5,22 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "spells")
+@Getter
+@Setter
 public class Spell {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @NotBlank
     private String name;
@@ -20,54 +28,25 @@ public class Spell {
     private String description;
     @Min(0) @Max(9)
     private int level;
-    @NotBlank
-    private Classes classes;
-    @NotBlank
+    @ManyToMany
+    @JoinTable(
+        name = "spell_classes",
+        joinColumns = @JoinColumn(name = "spell_id"),
+        inverseJoinColumns = @JoinColumn(name = "class_id")
+    )
+    private Set<CharacterClass> classes = new HashSet<>();
+    @NotNull
     @Enumerated(EnumType.STRING)
     private School school;
     private boolean isRitual;
     private boolean isConcentration;
-    @NotBlank
+    @NotNull
     @Enumerated(EnumType.STRING)
     private DamageType damageType;
-    @NotBlank
     @Enumerated(EnumType.STRING)
     private SavingThrow savingThrow;
-    @NotBlank
     @Enumerated(EnumType.STRING)
     private Components components;
 
     public Spell() {}
-
-    public int getId() { return id; }
-
-    public String getName() { return name; }
-    public void setName(String name) {}
-
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-
-    public int getLevel() { return level; }
-    public void setLevel(int level) { this.level = level; }
-
-    public Classes getClasses() { return classes; }
-    public void setClasses(Classes classes) { this.classes = classes; }
-
-    public School getSchool() { return school; }
-    public void setSchool(School school) { this.school = school; }
-
-    public boolean isRitual() { return isRitual; }
-    public void setRitual(boolean ritual) { this.isRitual = ritual; }
-
-    public boolean isConcentration() { return isConcentration; }
-    public void setConcentration(boolean concentration) { this.isConcentration = concentration; }
-
-    public DamageType getDamageType() { return damageType; }
-    public void setDamageType(DamageType damageType) { this.damageType = damageType; }
-
-    public SavingThrow getSavingThrow() { return savingThrow; }
-    public void setSavingThrow(SavingThrow savingThrow) { this.savingThrow = savingThrow; }
-
-    public Components getComponents() { return components; }
-    public void setComponents(Components components) { this.components = components; }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.CharacterClass;
 import com.example.demo.entity.Spell;
 import com.example.demo.entity.model.spell.*;
 import com.example.demo.repository.SpellRepository;
@@ -54,7 +55,7 @@ public class SpellService {
         return spellRepository.findByConcentration(concentration);
     }
 
-    public List<Spell> getSpellsByClasses(Classes classes) {
+    public List<Spell> getSpellsByClasses(CharacterClass classes) {
         return spellRepository.findByClasses(classes);
     }
 }

@@ -12,6 +12,6 @@ public record MonsterResponse(
         MonsterType monsterType,
         int health,
         int armorClass,
-        double challengeRating,
-        int speed
+        double challengeRating
+        //int speed
 ) {}
