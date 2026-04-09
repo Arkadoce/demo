@@ -6,12 +6,13 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
     <!-- Здесь мы будем подключать наши файлы с SQL -->
-    <include file="db/changelog/changes/001-init-db.sql" relativeToChangelogFile="false"/>
-    <include file="db/changelog/changes/002-classes.sql" relativeToChangelogFile="false"/>
-    <include file="db/changelog/changes/003-spells.sql" relativeToChangelogFile="false"/>
-    <include file="db/changelog/changes/004-characters.sql" relativeToChangelogFile="false"/>
-    <include file="db/changelog/changes/005-class_features.sql" relativeToChangelogFile="false"/>
-    <include file="db/changelog/changes/006-subclasses.sql" relativeToChangelogFile="false"/>
-    <include file="db/changelog/changes/007-users.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/bestiary/001-init-db.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/classes/002-classes.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/spells/003-spells.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/characters/004-characters.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/classes/005-class_features.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/classes/006-subclasses.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/registry/007-users.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/data/008-initial-content.sql" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

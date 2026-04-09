@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Бестиарий - D&D Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #1a1a1a; color: #e0e0e0; height: 100vh; display: flex; flex-direction: column; }
+        .main-container { display: flex; flex: 1; overflow: hidden; }
+
+        /* Левая панель (список) */
+        .sidebar { width: 300px; background: #252525; border-right: 2px solid #d4af37; overflow-y: auto; padding: 10px; }
+        .monster-link { display: block; padding: 10px; color: #ccc; text-decoration: none; border-bottom: 1px solid #333; }
+        .monster-link:hover { background: #333; color: #d4af37; }
+
+        /* Правая панель (описание) */
+        .content { flex: 1; padding: 40px; overflow-y: auto; background: #1a1a1a; }
+        .monster-header { border-bottom: 2px solid #d4af37; margin-bottom: 20px; padding-bottom: 10px; }
+        .gold { color: #d4af37; }
+        .stat-box { background: #2a2a2a; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<!-- Простая навигация сверху -->
+<nav class="navbar navbar-dark bg-dark border-bottom border-warning">
+    <div class="container-fluid">
+        <a class="navbar-brand gold" href="/">⬅ На главную</a>
+        <span class="navbar-text">Бестиарий (Всего: [[${monsters.size()}]])</span>
+    </div>
+</nav>
+
+<div class="main-container">
+    <!-- Левое меню -->
+    <div class="sidebar">
+        <input type="text" class="form-control mb-3 bg-dark text-white border-secondary" placeholder="Поиск монстра...">
+        <div th:each="m : ${monsters}">
+            <a href="#" class="monster-link" th:text="${m.name}" th:onclick="'showMonster(' + ${m.id} + ')'">Гоблин</a>
+        </div>
+    </div>
+
+    <!-- Область описания (для начала просто выведем первого или заглушку) -->
+    <div class="content">
+        <div th:if="${monsters.isEmpty()}">Тут пока пусто...</div>
+
+        <div th:each="m, iter : ${monsters}" th:if="${iter.index == 0}">
+            <div class="monster-header">
+                <h1 th:text="${m.name}" class="gold">Гоблин</h1>
+                <em th:text="${m.size} + ' ' + ${m.type} + ', ' + ${m.challengeRating}">Small гуманоид, 1/4</em>
+            </div>
+
+            <div class="stat-box">
+                <strong>Класс Доспеха:</strong> <span th:text="${m.armorClass}">15</span><br>
+                <strong>Хиты:</strong> <span th:text="${m.health}">7</span><br>
+                <strong>Скорость:</strong> <span th:text="${m.speed}">30 футов</span>
+            </div>
+
+            <p th:text="${m.description}"></p>
+
+            <table class="table table-dark table-bordered text-center mt-4">
+                <tr class="gold">
+                    <th>СИЛ</th><th>ЛОВ</th><th>ТЕЛ</th><th>ИНТ</th><th>МУД</th><th>ХАР</th>
+                </tr>
+                <tr>
+                    <td th:text="${m.stats.Str}">10</td>
+                    <td th:text="${m.stats.Dex}">10</td>
+                    <td th:text="${m.stats.Con}">10</td>
+                    <td th:text="${m.stats.Int}">10</td>
+                    <td th:text="${m.stats.Wis}">10</td>
+                    <td th:text="${m.stats.Cha}">10</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
