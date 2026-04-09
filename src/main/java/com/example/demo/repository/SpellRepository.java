@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.CharacterClass;
 import com.example.demo.entity.Spell;
 import com.example.demo.entity.model.spell.*;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,5 +18,5 @@ public interface SpellRepository extends JpaRepository<Spell, Long> {
     public List<Spell> findByRitual(boolean ritual);
     public List<Spell> findBySchool(School school);
     public List<Spell> findByComponents(Components components);
-    public List<Spell> findByClasses(Classes classes);
+    public List<Spell> findByClasses(CharacterClass classes);
 }

@@ -5,13 +5,19 @@ import com.example.demo.entity.Stats;
 import com.example.demo.entity.model.CreatureSize;
 import com.example.demo.entity.model.MonsterType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "bestiary")
+@Getter @Setter @NoArgsConstructor
 public class Monster extends Creature {
 
     @Id
@@ -19,8 +25,8 @@ public class Monster extends Creature {
     private Long id;
 
     @Size(min = 1, max = 1000)
+    @Column(nullable = false)
     private String description;
-    private List<String> keywords;
 
     @Enumerated(EnumType.STRING)
     private MonsterType type;
@@ -28,26 +34,10 @@ public class Monster extends Creature {
     @PositiveOrZero
     private Double challengeRating;
 
-    public Monster() {}
-
-    public Monster(String name, String description, Stats stats, CreatureSize size, MonsterType monsterType, int maxHp, int speed, double challengeRating, int armorClass) {
-        super(name, stats, armorClass, maxHp, speed, size);
+    public Monster(String name, String description, Stats stats, CreatureSize size, MonsterType type, int health, int armorClass, Double challengeRating) {
+        super(name, stats, armorClass, health, size);
         this.description = description;
-        this.type = monsterType;
+        this.type = type;
         this.challengeRating = challengeRating;
     }
-
-    public Double getChallengeRating() { return challengeRating; }
-    public void setChallengeRating(Double challengeRating) {this.challengeRating = challengeRating; }
-
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-
-    public List<String> getKeywords() { return keywords; }
-    public void setKeywords(List<String> keywords) { this.keywords = keywords; }
-
-    public Long getId() { return id; }
-
-    public MonsterType getType() { return type; }
-    public void setType(MonsterType type) { this.type = type; }
 }

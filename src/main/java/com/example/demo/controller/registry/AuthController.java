@@ -2,7 +2,6 @@ package com.example.demo.controller.registry;
 
 import com.example.demo.dto.registry.RegistrationRequest;
 import com.example.demo.service.registry.AuthService;
-import jakarta.servlet.Registration;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

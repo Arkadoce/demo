@@ -4,22 +4,23 @@ import com.example.demo.entity.model.CreatureSize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name="characters")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class CharacterEntity extends Creature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Min(1) @Max(20)
     private int level;
-
-    protected CharacterEntity() {};
-
-    public CharacterEntity(String name, Stats stats, int armorClass, int maxHp, int speed, CreatureSize size, int level){
-        super(name,stats,armorClass,maxHp,speed,size);
-        this.level=level;
-    }
+    @ManyToOne
+    @JoinColumn(name = "class_id")
+    private CharacterClass characterClass;
 
     public int bm(){
         if (level >= 17) return 6;
@@ -27,14 +28,5 @@ public class CharacterEntity extends Creature {
         if (level >= 9)  return 4;
         if (level >= 5)  return 3;
         return 2;
-    }
-
-    public int getLevel(){
-        return level;
-    }
-    public void setLevel(int level) { this.level = level; }
-
-    public long getId() {
-        return id;
     }
 }

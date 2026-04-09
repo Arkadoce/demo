@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.CharacterClass;
 import com.example.demo.entity.Spell;
 import com.example.demo.entity.model.spell.*;
 import com.example.demo.service.SpellService;
@@ -19,6 +20,11 @@ public class SpellController {
         this.spellService = spellService;
     }
 
+    @GetMapping
+    public List<Spell> getAllSpells() {
+        return spellService.getSpells();
+    }
+
     @GetMapping("/filter/level")
     public List<Spell> searchSpellsByLevel(int level) {
         return spellService.getSpellsByLevel(level);
@@ -35,7 +41,7 @@ public class SpellController {
     }
 
     @GetMapping("/filter/classes")
-    public List<Spell> searchSpellsByClasses(Classes classes) {
+    public List<Spell> searchSpellsByClasses(CharacterClass classes) {
         return spellService.getSpellsByClasses(classes);
     }
 

@@ -18,8 +18,8 @@ public class MonsterMapper {
                 dto.monsterType(),
                 dto.health(),
                 dto.armorClass(),
-                dto.challengeRating(),
-                dto.speed()
+                dto.challengeRating()
+                //dto.speed()
         );
     }
 
@@ -33,10 +33,10 @@ public class MonsterMapper {
                 monster.getStats(),
                 monster.getSize(),
                 monster.getType(),
-                monster.getMaxHp(),
+                monster.getHealth(),
                 monster.getArmorClass(),
-                monster.getChallengeRating(),
-                monster.getSpeed()
+                monster.getChallengeRating()
+                //monster.getSpeed()
         );
     }
 }
