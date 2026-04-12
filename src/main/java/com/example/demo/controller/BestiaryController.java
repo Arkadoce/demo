@@ -1,41 +1,31 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.MonsterResponse;
 import com.example.demo.entity.bestiary.Monster;
+import com.example.demo.entity.model.CreatureSize;
 import com.example.demo.entity.model.MonsterType;
 import com.example.demo.service.BestiaryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/bestiary")
+@RequiredArgsConstructor
 public class BestiaryController {
 
     private final BestiaryService bestiaryService;
 
-    public BestiaryController(BestiaryService bestiaryService) {
-        this.bestiaryService = bestiaryService;
+    @GetMapping("/filter")
+    public List<MonsterResponse> filter(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) CreatureSize size,
+            @RequestParam(required = false) MonsterType type,
+            @RequestParam(required = false) Double cr) {
+
+        return bestiaryService.getFiltered(name, size, type, cr);
     }
 
-    @GetMapping("/filter/TypeAndCR")
-    public List<Monster> searchByTypeAndChallengeRating(@RequestParam(required = false) MonsterType monsterType,
-                                                        @RequestParam(required = false) Double challengeRating) {
-        return bestiaryService.searchMonsterByTypeAndChallengeRating(monsterType, challengeRating);
-    }
-
-    @GetMapping("/filter/keyword")
-    public List<Monster> searchByKeyword(@RequestParam(required = false) String keyword) {
-        return bestiaryService.searchMonsterByDescriptionContainingIgnoreCase(keyword);
-    }
-
-    @GetMapping("/filter/name")
-    public List<Monster> searchByName(@RequestParam(required = false) String name) {
-        return bestiaryService.searchMonsterByNameContainingIgnoreCase(name);
-    }
-
-    @GetMapping
-    public List<Monster> getAllMonsters() {
-        return bestiaryService.getAll();
-    }
 }
 
