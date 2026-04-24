@@ -16,6 +16,12 @@ CREATE TABLE characters(
     int INT DEFAULT 10,
     cha INT DEFAULT 10,
 
+    alignment VARCHAR(100),
+
+    languages TEXT[],
+    skills TEXT[],
+    saving_throws TEXT[],
+
     CONSTRAINT fk_character_class
         FOREIGN KEY (class_id)
         REFERENCES character_classes (id)

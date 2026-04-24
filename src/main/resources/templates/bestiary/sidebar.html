@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="monster-sidebar" class="sidebar">
+    <h5 class="gold mb-3 text-center">Фильтры</h5>
+
+    <!-- 1. Поиск по имени -->
+    <div class="filter-group mb-2">
+        <small>Имя монстра:</small>
+        <input type="text" id="filter-name"
+               class="form-control form-control-sm bg-dark text-white border-secondary"
+               placeholder="Начни вводить...">
+    </div>
+
+    <!-- 2. Выбор Типа (MonsterType) -->
+    <div class="filter-group mb-2">
+        <small>Тип:</small>
+        <select id="filter-type" class="form-select form-select-sm bg-dark text-white border-secondary">
+            <option value="">Все типы</option>
+            <option value="HUMANOID">Гуманоид</option>
+            <option value="BEAST">Зверь</option>
+            <option value="DRAGON">Дракон</option>
+            <option value="UNDEAD">Нежить</option>
+            <option value="MONSTROSITY">Монстр</option>
+            <option value="FIEND">Исчадие</option>
+            <option value="CONSTRUCT">Конструкт</option>
+        </select>
+    </div>
+
+    <!-- 3. Выбор Размера (CreatureSize) -->
+    <div class="filter-group mb-2">
+        <small>Размер:</small>
+        <select id="filter-size" class="form-select form-select-sm bg-dark text-white border-secondary">
+            <option value="">Любой размер</option>
+            <option value="TINY">Крошечный</option>
+            <option value="SMALL">Маленький</option>
+            <option value="MEDIUM">Средний</option>
+            <option value="LARGE">Большой</option>
+            <option value="HUGE">Огромный</option>
+            <option value="GARGANTUAN">Громадный</option>
+        </select>
+    </div>
+
+    <!-- 4. Диапазон Опасности (CR) -->
+    <div class="filter-group mb-3">
+        <small>Опасность (CR):</small>
+        <div class="d-flex gap-2">
+            <input type="number" id="filter-min-cr" step="0.125" min="0" max="30"
+                   class="form-control form-control-sm bg-dark text-white border-secondary" placeholder="От">
+            <input type="number" id="filter-max-cr" step="0.125" min="0" max="30"
+                   class="form-control form-control-sm bg-dark text-white border-secondary" placeholder="До">
+        </div>
+    </div>
+
+    <hr class="border-secondary">
+
+    <!-- Список монстров (динамически обновляется) -->
+    <div id="monster-list-container">
+        <!-- Первичная загрузка через Thymeleaf -->
+        <div th:each="m : ${monsters}">
+            <a href="javascript:void(0)"
+               th:onclick="|loadMonster(${m.id})|"
+               class="monster-link">
+                <span th:text="${m.name}">Гоблин</span>
+                <small class="text-muted float-end" th:text="'CR ' + ${m.challengeRating}">CR 1/4</small>
+            </a>
+        </div>
+    </div>
+</div>
+</html>

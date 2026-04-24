@@ -13,7 +13,6 @@
     <include file="db/changelog/changes/classes/005-class_features.sql" relativeToChangelogFile="false"/>
     <include file="db/changelog/changes/classes/006-subclasses.sql" relativeToChangelogFile="false"/>
     <include file="db/changelog/changes/registry/007-users.sql" relativeToChangelogFile="false"/>
-    <include file="db/changelog/changes/data/008-initial-content.sql" relativeToChangelogFile="false"/>
-    <include file="db/changelog/changes/data/009-bestiary-content.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/data/008-bestiary-content.sql" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

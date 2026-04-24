@@ -4,35 +4,22 @@
     <meta charset="UTF-8">
     <title>Бестиарий - D&D Assistant</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Стили оставляем тут или выносим в .css -->
     <style>
         body { background-color: #1a1a1a; color: #e0e0e0; height: 100vh; display: flex; flex-direction: column; }
         .main-container { display: flex; flex: 1; overflow: hidden; }
-
-        /* Левая панель (список) */
         .sidebar { width: 300px; background: #252525; border-right: 2px solid #d4af37; overflow-y: auto; padding: 10px; }
         .monster-link { display: block; padding: 10px; color: #ccc; text-decoration: none; border-bottom: 1px solid #333; }
         .monster-link:hover { background: #333; color: #d4af37; }
-
-        /* Правая панель (описание) */
         .content { flex: 1; padding: 40px; overflow-y: auto; background: #1a1a1a; }
         .monster-header { border-bottom: 2px solid #d4af37; margin-bottom: 20px; padding-bottom: 10px; }
         .gold { color: #d4af37; }
         .stat-box { background: #2a2a2a; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-
-        .filter-group small {
-        color: #aaaaaa !important; /* Светло-серый */
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 1px;
-        margin-bottom: 8px;
-        display: block;
-}
+        .filter-group small { color: #aaaaaa !important; font-weight: bold; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 8px; display: block; }
     </style>
 </head>
 <body>
 
-<!-- Простая навигация сверху -->
 <nav class="navbar navbar-dark bg-dark border-bottom border-warning">
     <div class="container-fluid">
         <a class="navbar-brand gold" href="/">⬅ На главную</a>
@@ -41,177 +28,80 @@
 </nav>
 
 <div class="main-container">
-    <!-- Левое меню -->
-    <div class="sidebar">
+    <!-- ПОДКЛЮЧАЕМ САЙДБАР -->
+    <div th:replace="~{bestiary/sidebar :: monster-sidebar}"></div>
 
-        <!-- 1. ID для поиска имени -->
-        <input type="text" id="monster-search"
-               class="form-control mb-3 bg-dark text-white border-secondary"
-               placeholder="Поиск монстра...">
-
-        <!-- 2. Кнопки фильтров (Тип) -->
-        <div class="filter-group mb-3">
-            <small class="text-muted d-block mb-1">Тип:</small>
-            <div class="d-flex flex-wrap gap-1">
-                <!-- data-value должен СТРОГО совпадать с твоим Enum в Java (например, BEAST, DRAGON) -->
-                <button class="btn btn-outline-warning btn-sm filter-btn filter-btn-type" data-value="HUMANOID">Гум.</button>
-                <button class="btn btn-outline-warning btn-sm filter-btn filter-btn-type" data-value="BEAST">Зверь</button>
-                <button class="btn btn-outline-warning btn-sm filter-btn filter-btn-type" data-value="DRAGON">Драк.</button>
-                <button class="btn btn-outline-warning btn-sm filter-btn filter-btn-type" data-value="">Все</button>
-            </div>
-        </div>
-
-        <!-- 3. Кнопки фильтров (CR) -->
-        <div class="filter-group mb-3">
-            <small class="text-muted d-block mb-1">Опасность (CR):</small>
-            <div class="d-flex flex-wrap gap-1">
-                <button class="btn btn-outline-info btn-sm filter-btn filter-btn-cr" data-value="0.25">1/4</button>
-                <button class="btn btn-outline-info btn-sm filter-btn filter-btn-cr" data-value="0.5">1/2</button>
-                <button class="btn btn-outline-info btn-sm filter-btn filter-btn-cr" data-value="1.0">1</button>
-                <button class="btn btn-outline-info btn-sm filter-btn filter-btn-cr" data-value="">Все</button>
-            </div>
-        </div>
-
-        <hr class="border-secondary">
-
-        <!-- 4. ID для контейнера, который JS будет ПЕРЕРИСОВЫВАТЬ -->
-        <div id="monster-list-container">
-            <div th:each="m : ${monsters}">
-                <!--
-                    Заменяем th:href на href="javascript:void(0)"
-                    И добавляем th:onclick, чтобы вызывалась наша JS функция
-                -->
-                <a href="javascript:void(0)"
-                   th:onclick="|loadMonster(${m.id})|"
-                   class="monster-link"
-                   th:text="${m.name}">Гоблин</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Область описания (для начала просто выведем первого или заглушку) -->
-    <!-- Добавляем th:fragment, чтобы JS мог запрашивать только этот блок -->
-    <div class="content" th:fragment="monster-details" id="monster-details-container">
-
-        <!-- Если монстр выбран (передан из контроллера) -->
-        <div th:if="${selectedMonster != null}">
-            <div class="monster-header">
-                <h1 th:text="${selectedMonster.name}" class="gold">Название</h1>
-                <em th:text="${selectedMonster.size} + ' ' + ${selectedMonster.type} + ', ' + ${selectedMonster.challengeRating}">
-                    Размер, Тип, CR
-                </em>
-            </div>
-
-            <div class="stat-box">
-                <strong>Класс Доспеха:</strong> <span th:text="${selectedMonster.armorClass}">15</span><br>
-                <strong>Хиты:</strong> <span th:text="${selectedMonster.health}">7</span><br>
-                <strong>Скорость:</strong> <span th:text="${selectedMonster.speed}">30 футов</span>
-            </div>
-
-            <p th:text="${selectedMonster.description}"></p>
-
-            <table class="table table-dark table-bordered text-center mt-4">
-                <tr class="gold">
-                    <th>СИЛ</th><th>ЛОВ</th><th>ТЕЛ</th><th>ИНТ</th><th>МУД</th><th>ХАР</th>
-                </tr>
-                <tr>
-                    <!-- Обрати внимание на названия полей в твоем StatsDto (обычно с маленькой буквы) -->
-                    <td th:text="${selectedMonster.statsDto.Str + ' (' + selectedMonster.statsDto.strMod + ')'}">10</td>
-                    <td th:text="${selectedMonster.statsDto.Dex + ' (' + selectedMonster.statsDto.dexMod + ')'}">10</td>
-                    <td th:text="${selectedMonster.statsDto.Con + ' (' + selectedMonster.statsDto.conMod + ')'}">10</td>
-                    <td th:text="${selectedMonster.statsDto.Int + ' (' + selectedMonster.statsDto.intMod + ')'}">10</td>
-                    <td th:text="${selectedMonster.statsDto.Wis + ' (' + selectedMonster.statsDto.wisMod + ')'}">10</td>
-                    <td th:text="${selectedMonster.statsDto.Cha + ' (' + selectedMonster.statsDto.chaMod + ')'}">10</td>
-                </tr>
-            </table>
-        </div>
-
-        <!-- Если монстр еще не выбран (при первом заезде на страницу) -->
-        <div th:unless="${selectedMonster != null}" class="text-center mt-5">
-            <h3 class="text-muted">Выберите существо из списка слева, чтобы увидеть подробности</h3>
-        </div>
+    <!-- ПОДКЛЮЧАЕМ КОНТЕНТНУЮ ОБЛАСТЬ -->
+    <div class="content" id="monster-details-container">
+        <div th:replace="~{bestiary/card :: monster-details}"></div>
     </div>
 </div>
 
 <script th:inline="javascript">
-    // 1. ФУНКЦИЯ ЗАГРУЗКИ (она должна быть видна всем)
-   async function loadMonster(id) {
-       console.log("Нажат монстр с ID:", id); // Это появится в консоли при клике
-       try {
-           // Путь должен быть таким же, как в твоем BestiaryHtmlController
-           const response = await fetch(`/bestiary?id=${id}&fragment=details`);
-           const html = await response.text();
+    // Оставляем всю твою JS-логику здесь, она управляет взаимодействием
+    async function loadMonster(id) {
+        try {
+            const response = await fetch(`/bestiary?id=${id}&fragment=details`);
+            const html = await response.text();
+            document.getElementById('monster-details-container').innerHTML = html;
+            window.history.pushState({}, '', `/bestiary?id=${id}`);
+        } catch (e) { console.error(e); }
+    }
 
-           const container = document.getElementById('monster-details-container');
-           if (container) {
-               container.innerHTML = html;
-           }
+    async function updateFilters() {
+    // Считываем значения из селектов и инпутов
+    const name = document.getElementById('filter-name').value;
+    const type = document.getElementById('filter-type').value;
+    const size = document.getElementById('filter-size').value;
+    const minCr = document.getElementById('filter-min-cr').value;
+    const maxCr = document.getElementById('filter-max-cr').value;
 
-           // Обновляем URL, чтобы можно было нажать "Назад" в браузере
-           window.history.pushState({}, '', `/bestiary?id=${id}`);
-       } catch (e) {
-           console.error("Ошибка при загрузке деталей:", e);
-       }
-   }
+    // Формируем параметры для URL
+    const params = new URLSearchParams();
+    if (name) params.append('name', name);
+    if (type) params.append('type', type);
+    if (size) params.append('size', size);
+    if (minCr) params.append('minCr', minCr);
+    if (maxCr) params.append('maxCr', maxCr);
 
-   // Функция для сбора фильтров и запроса данных
-   async function updateFilters() {
-       const name = document.getElementById('monster-search').value;
+    try {
+        // Отправляем запрос в REST-контроллер
+        const response = await fetch('/api/bestiary/filter?' + params.toString());
+        const monsters = await response.json();
 
-       // Ищем активную кнопку в группе типов
-       const activeTypeBtn = document.querySelector('.filter-btn-type.active');
-       const type = activeTypeBtn ? activeTypeBtn.dataset.value : '';
+        // Перерисовываем список в сайдбаре
+        const container = document.getElementById('monster-list-container');
+        container.innerHTML = monsters.map(m => `
+            <a href="javascript:void(0)" onclick="loadMonster(${m.id})" class="monster-link">
+                ${m.name} <small class="text-muted float-end">CR ${m.challengeRating}</small>
+            </a>
+        `).join('');
+    } catch (e) {
+        console.error("Ошибка фильтрации:", e);
+    }
+}
 
-       // Ищем активную кнопку в группе CR
-       const activeCrBtn = document.querySelector('.filter-btn-cr.active');
-       const cr = activeCrBtn ? activeCrBtn.dataset.value : '';
+// Слушатели событий (вставь это в конец своего скрипта)
+document.getElementById('filter-name').addEventListener('input', updateFilters);
+document.getElementById('filter-type').addEventListener('change', updateFilters);
+document.getElementById('filter-size').addEventListener('change', updateFilters);
+document.getElementById('filter-min-cr').addEventListener('input', updateFilters);
+document.getElementById('filter-max-cr').addEventListener('input', updateFilters);
 
-       // Собираем параметры (имена должны совпадать с @RequestParam в контроллере!)
-       const params = new URLSearchParams();
-       if (name) params.append('name', name);
-       if (type) params.append('type', type);
-       if (cr) params.append('cr', cr);
+    // Слушатели (Input и кнопки)
+    let timeout;
+    document.getElementById('monster-search').addEventListener('input', () => {
+        clearTimeout(timeout);
+        timeout = setTimeout(updateFilters, 300);
+    });
 
-       const response = await fetch('/api/bestiary/filter?' + params.toString());
-       const monsters = await response.json();
-
-       async function loadMonsterDetails(id) {
-           try {
-               // Запрашиваем у HTML-контроллера только ПРАВУЮ часть страницы
-               const response = await fetch(`/api/bestiary/fr?id=${id}&fragment=details`);
-               const html = await response.text();
-
-               // Находим правую панель (убедись, что у нее класс 'content')
-               const contentArea = document.querySelector('.content');
-               contentArea.innerHTML = html;
-
-               // Опционально: обновляем URL в строке браузера без перезагрузки
-               history.pushState(null, '', `/api/bestiary/fr?id=${id}`);
-           } catch (error) {
-               console.error('Ошибка при загрузке карточки:', error);
-           }
-       }
-
-       // Перерисовываем список
-       const container = document.getElementById('monster-list-container');
-       container.innerHTML = monsters.map(m => `
-           <a href="javascript:void(0)" onclick="loadMonster(${m.id})" class="monster-link">${m.name}</a>
-       `).join('');
-   }
-
-   // Слушаем ввод текста
-   document.getElementById('monster-search').addEventListener('input', updateFilters);
-
-   // Слушаем клики по кнопкам
-   document.querySelectorAll('.filter-btn').forEach(btn => {
-       btn.addEventListener('click', function() {
-           // Внутри своей группы убираем 'active' у всех и даем этой кнопке
-           this.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-           this.classList.add('active');
-
-           updateFilters();
-       });
-   });
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            updateFilters();
+        });
+    });
 </script>
 </body>
 </html>

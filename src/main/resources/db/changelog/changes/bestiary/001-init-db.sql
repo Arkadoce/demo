@@ -1,5 +1,4 @@
 CREATE TABLE bestiary (
-
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
@@ -14,5 +13,23 @@ CREATE TABLE bestiary (
     con INT DEFAULT 10,
     int INT DEFAULT 10,
     wis INT DEFAULT 10,
-    cha INT DEFAULT 10
-);
+    cha INT DEFAULT 10,
+
+    alignment VARCHAR(100),
+    habitat VARCHAR(255),
+
+    languages TEXT[],
+    traits TEXT[],
+    actions TEXT[],
+    reactions TEXT[],
+    legendary_actions TEXT[],
+    saving_throws TEXT[],
+    skills TEXT[],
+    damage_resistances TEXT[],
+    damage_immunities TEXT[],
+    condition_immunities TEXT[],
+    senses TEXT[],
+
+    experience_points INT,
+    proficiency_bonus INT
+)

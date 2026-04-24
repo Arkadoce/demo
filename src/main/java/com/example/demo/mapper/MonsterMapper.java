@@ -21,31 +21,70 @@ public class MonsterMapper {
                 monster.getId(),
                 monster.getName(),
                 monster.getDescription(),
-                monster.getSize().name(),
-                monster.getType().name(),
+                monster.getSize() != null ? monster.getSize().name() : null,
+                monster.getType() != null ? monster.getType().name() : null,
+                monster.getAlignment(),
+                monster.getHabitat(),
                 monster.getHealth(),
                 monster.getArmorClass(),
                 formatCr(monster.getChallengeRating()),
+                monster.getExperiencePoints(),
+                monster.getProficiencyBonus(),
                 monster.getSpeed(),
-                statsMapper.toDto(monster.getStats())
+                statsMapper.toDto(monster.getStats()),
+
+                monster.getLanguages(),
+                monster.getTraits(),
+                monster.getActions(),
+                monster.getReactions(),
+                monster.getLegendaryActions(),
+                monster.getSavingThrows(),
+                monster.getSkills(),
+                monster.getDamageResistances(),
+                monster.getDamageImmunities(),
+                monster.getConditionImmunities(),
+                monster.getSenses()
         );
     }
 
     public Monster fromResponse(MonsterResponse response) {
         if (response == null) return null;
 
-        return new Monster(
-                //response.id(),
-                response.name(),
-                response.description(),
-                statsMapper.fromDto(response.statsDto()),
-                response.speed(),
-                CreatureSize.valueOf(response.size()),
-                MonsterType.valueOf(response.type()),
-                response.health(),
-                response.armorClass(),
-                formatCrToDouble(response.challengeRating())
-        );
+        Monster monster = new Monster();
+
+        monster.setId(response.id());
+        monster.setName(response.name());
+        monster.setDescription(response.description());
+        monster.setHealth(response.health());
+        monster.setArmorClass(response.armorClass());
+        monster.setSpeed(response.speed());
+        monster.setChallengeRating(formatCrToDouble(response.challengeRating()));
+        monster.setExperiencePoints(response.experience());
+        monster.setAlignment(response.alignment());
+        monster.setHabitat(response.habitat());
+
+        if (response.size() != null && !response.size().isBlank()) {
+            monster.setSize(CreatureSize.valueOf(response.size()));
+        }
+        if (response.type() != null && !response.type().isBlank()) {
+            monster.setType(MonsterType.valueOf(response.type()));
+        }
+
+        monster.setStats(statsMapper.fromDto(response.statsDto()));
+
+        monster.setLanguages(response.languages());
+        monster.setTraits(response.traits());
+        monster.setActions(response.actions());
+        monster.setReactions(response.reactions());
+        monster.setLegendaryActions(response.legendaryActions());
+        monster.setSavingThrows(response.savingThrows());
+        monster.setSkills(response.skills());
+        monster.setDamageResistances(response.damageResistances());
+        monster.setDamageImmunities(response.damageImmunities());
+        monster.setConditionImmunities(response.conditionImmunities());
+        monster.setSenses(response.senses());
+
+        return monster;
     }
 
     private String formatCr(Double cr) {

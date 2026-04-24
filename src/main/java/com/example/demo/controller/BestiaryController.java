@@ -20,11 +20,12 @@ public class BestiaryController {
     @GetMapping("/filter")
     public List<MonsterResponse> filter(
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) CreatureSize size,
-            @RequestParam(required = false) MonsterType type,
-            @RequestParam(required = false) Double cr) {
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String size,
+            @RequestParam(required = false) Double minCr,
+            @RequestParam(required = false) Double maxCr) {
 
-        return bestiaryService.getFiltered(name, size, type, cr);
+        return bestiaryService.getFilteredMonsters(name, type, size, minCr, maxCr);
     }
 
 }

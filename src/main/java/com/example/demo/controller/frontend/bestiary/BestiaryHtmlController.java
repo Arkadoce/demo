@@ -22,30 +22,19 @@ public class BestiaryHtmlController {
 
     @GetMapping
     public String showBestiary(@RequestParam(required = false) Long id,
-                               @RequestParam(required = false) String name,
-                               @RequestParam(required = false) CreatureSize size,
-                               @RequestParam(required = false) MonsterType type,
-                               @RequestParam(required = false) Double cr,
                                @RequestParam(required = false) String fragment,
                                Model model) {
-        List<MonsterResponse> monsters = bestiaryService.getFiltered(name, size, type, cr);
-        model.addAttribute("monsters", monsters);
-
-        MonsterResponse selectedMonster = null;
+        model.addAttribute("monsters", bestiaryService.getAll());
 
         if (id != null) {
-            selectedMonster = bestiaryService.getById(id);
-        } else if (!monsters.isEmpty()) {
-            selectedMonster = monsters.get(0);
+            model.addAttribute("selectedMonster", bestiaryService.getById(id));
         }
-
-        model.addAttribute("selectedMonster", selectedMonster);
 
         if ("details".equals(fragment)) {
-            return "bestiary/list :: monster-details";
+            return "bestiary/card :: monster-details";
         }
 
-        return "bestiary/list"; // Папка bestiary, файл list.html
+        return "bestiary/list";
     }
 
 }
