@@ -7,30 +7,47 @@ import org.springframework.stereotype.Component;
 @Component
 public class StatsMapper {
 
-    public static Stats toStats(StatsDto dto) {
-        if (dto == null) {
-            return new Stats(10, 10, 10, 10, 10, 10);
-        }
-        return new Stats(
-                dto.strength(),
-                dto.dexterity(),
-                dto.constitution(),
-                dto.intelligence(),
-                dto.wisdom(),
-                dto.charisma()
-        );
+    private static int calculatedMod(int score) {
+        return Math.floorDiv(score - 10, 2) ;
     }
 
-    public static StatsDto toStatsDto(Stats stats) {
-        if (stats == null) return null;
+    public StatsDto toDto(Stats stats) {
+
+        if (stats == null) {
+            return null;
+        }
 
         return new StatsDto(
                 stats.Str(),
+                calculatedMod(stats.Str()),
                 stats.Dex(),
+                calculatedMod(stats.Dex()),
                 stats.Con(),
+                calculatedMod(stats.Con()),
                 stats.Int(),
+                calculatedMod(stats.Int()),
                 stats.Wis(),
-                stats.Cha()
+                calculatedMod(stats.Wis()),
+                stats.Cha(),
+                calculatedMod(stats.Cha())
         );
     }
+
+    public Stats fromDto(StatsDto dto) {
+
+        if (dto == null) {
+            return null;
+        }
+
+        return new Stats(
+                dto.Str(),
+                dto.Dex(),
+                dto.Con(),
+                dto.Wis(),
+                dto.Int(),
+                dto.Cha()
+        );
+    }
+
+
 }

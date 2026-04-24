@@ -4,7 +4,8 @@ import com.example.demo.dto.CharacterResponse;
 import com.example.demo.entity.CharacterEntity;
 import org.springframework.stereotype.Component;
 
-@Component
+/**
+ @Component
 public class CharacterMapper {
     public static CharacterResponse toResponse(CharacterEntity entity) {
         return new CharacterResponse(
@@ -17,3 +18,4 @@ public class CharacterMapper {
 
     }
 }
+ **/

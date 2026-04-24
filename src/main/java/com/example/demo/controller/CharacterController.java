@@ -1,5 +1,5 @@
 package com.example.demo.controller;
-
+/**
 import com.example.demo.dto.CreateCharacterRequest;
 import com.example.demo.dto.CharacterResponse;
 import com.example.demo.entity.CharacterEntity;
@@ -30,7 +30,7 @@ public class CharacterController {
                 StatsMapper.toStats(req.stats())
         );
         return CharacterMapper.toResponse(saved);
-    } **/
+    }
 
     // ===== READ ALL =====
     @GetMapping
@@ -54,9 +54,10 @@ public class CharacterController {
     }
 
     // ===== ACTION: LEVEL UP =====
-    /**
+
     @PostMapping("/{id}/level-up")
     public CharacterResponse levelUp(@PathVariable Long id) {
         return CharacterMapper.toResponse(service.levelUp(id));
-    } **/
+    }
 }
+**/

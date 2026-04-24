@@ -1,17 +1,32 @@
 package com.example.demo.dto;
 
-import com.example.demo.entity.Stats;
-import com.example.demo.entity.model.MonsterType;
-import com.example.demo.entity.model.CreatureSize;
+import java.util.List;
 
 public record MonsterResponse(
+        Long id,
         String name,
         String description,
-        Stats stats,
-        CreatureSize size,
-        MonsterType monsterType,
+        String size,
+        String type,
+        String alignment,
+        String habitat,
         int health,
         int armorClass,
-        double challengeRating
-        //int speed
+        String challengeRating,
+        int experience,
+        int proficiencyBonus,
+        int speed,
+        StatsDto statsDto,
+
+        List<String> languages,
+        List<String> traits,
+        List<String> actions,
+        List<String> reactions,
+        List<String> legendaryActions,
+        List<String> savingThrows,
+        List<String> skills,
+        List<String> damageResistances,
+        List<String> damageImmunities,
+        List<String> conditionImmunities,
+        List<String> senses
 ) {}

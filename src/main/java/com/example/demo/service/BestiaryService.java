@@ -1,50 +1,41 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.MonsterResponse;
 import com.example.demo.entity.bestiary.Monster;
-import com.example.demo.entity.model.MonsterType;
-import com.example.demo.repository.BestiaryRepository;
+import com.example.demo.mapper.MonsterMapper;
+import com.example.demo.repository.bestiary.BestiaryRepository;
+import com.example.demo.specification.MonsterSpecification;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BestiaryService {
 
     private final BestiaryRepository bestiaryRepository;
+    private final MonsterMapper mapper;
 
-    public BestiaryService(BestiaryRepository bestiaryRepository) {
-        this.bestiaryRepository = bestiaryRepository;
+    public List<MonsterResponse> getFilteredMonsters(String name, String type, String size, Double minCr, Double maxCr) {
+        Specification<Monster> spec = MonsterSpecification.filterMonster(name, type, size, minCr, maxCr);
+
+        List<Monster> monsters = bestiaryRepository.findAll(spec);
+
+        return monsters.stream()
+                .map(mapper::toResponse)
+                .toList();
     }
 
-    public List<Monster> getAll() {
-        return bestiaryRepository.findAll();
+    public List<MonsterResponse> getAll() {
+        return bestiaryRepository.findAll().stream()
+                .map(mapper::toResponse).toList();
     }
 
-    public List<Monster> searchMonsterByTypeAndChallengeRating(MonsterType type, Double challengeRating) {
-        if (type != null && challengeRating != null) {
-            return bestiaryRepository.findByTypeAndChallengeRating(type, challengeRating);
-        } else if (type != null) {
-            return bestiaryRepository.findByType(type);
-        } else if (challengeRating != null) {
-            return bestiaryRepository.findByChallengeRating(challengeRating);
-        }
-        return bestiaryRepository.findAll();
-    }
-
-    public List<Monster> searchMonsterByDescriptionContainingIgnoreCase(String keyword) {
-        if (keyword != null) {
-            return bestiaryRepository.findByDescriptionContainingIgnoreCase(keyword);
-        } else {
-            return bestiaryRepository.findAll();
-        }
-    }
-
-    public List<Monster> searchMonsterByNameContainingIgnoreCase(String name) {
-        if (name != null) {
-            return bestiaryRepository.findByNameContainingIgnoreCase(name);
-        } else {
-            return bestiaryRepository.findAll();
-        }
+    public MonsterResponse getById(Long id) {
+        return mapper.toResponse(bestiaryRepository.findById(id)
+                .orElseThrow());
     }
 }
 

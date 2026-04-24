@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Бестиарий - D&D Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Стили оставляем тут или выносим в .css -->
+    <style>
+        body { background-color: #1a1a1a; color: #e0e0e0; height: 100vh; display: flex; flex-direction: column; }
+        .main-container { display: flex; flex: 1; overflow: hidden; }
+        .sidebar { width: 300px; background: #252525; border-right: 2px solid #d4af37; overflow-y: auto; padding: 10px; }
+        .monster-link { display: block; padding: 10px; color: #ccc; text-decoration: none; border-bottom: 1px solid #333; }
+        .monster-link:hover { background: #333; color: #d4af37; }
+        .content { flex: 1; padding: 40px; overflow-y: auto; background: #1a1a1a; }
+        .monster-header { border-bottom: 2px solid #d4af37; margin-bottom: 20px; padding-bottom: 10px; }
+        .gold { color: #d4af37; }
+        .stat-box { background: #2a2a2a; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .filter-group small { color: #aaaaaa !important; font-weight: bold; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; margin-bottom: 8px; display: block; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark border-bottom border-warning">
+    <div class="container-fluid">
+        <a class="navbar-brand gold" href="/">⬅ На главную</a>
+        <span class="navbar-text">Бестиарий (Всего: [[${monsters.size()}]])</span>
+    </div>
+</nav>
+
+<div class="main-container">
+    <!-- ПОДКЛЮЧАЕМ САЙДБАР -->
+    <div th:replace="~{bestiary/sidebar :: monster-sidebar}"></div>
+
+    <!-- ПОДКЛЮЧАЕМ КОНТЕНТНУЮ ОБЛАСТЬ -->
+    <div class="content" id="monster-details-container">
+        <div th:replace="~{bestiary/card :: monster-details}"></div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    // Оставляем всю твою JS-логику здесь, она управляет взаимодействием
+    async function loadMonster(id) {
+        try {
+            const response = await fetch(`/bestiary?id=${id}&fragment=details`);
+            const html = await response.text();
+            document.getElementById('monster-details-container').innerHTML = html;
+            window.history.pushState({}, '', `/bestiary?id=${id}`);
+        } catch (e) { console.error(e); }
+    }
+
+    async function updateFilters() {
+    // Считываем значения из селектов и инпутов
+    const name = document.getElementById('filter-name').value;
+    const type = document.getElementById('filter-type').value;
+    const size = document.getElementById('filter-size').value;
+    const minCr = document.getElementById('filter-min-cr').value;
+    const maxCr = document.getElementById('filter-max-cr').value;
+
+    // Формируем параметры для URL
+    const params = new URLSearchParams();
+    if (name) params.append('name', name);
+    if (type) params.append('type', type);
+    if (size) params.append('size', size);
+    if (minCr) params.append('minCr', minCr);
+    if (maxCr) params.append('maxCr', maxCr);
+
+    try {
+        // Отправляем запрос в REST-контроллер
+        const response = await fetch('/api/bestiary/filter?' + params.toString());
+        const monsters = await response.json();
+
+        // Перерисовываем список в сайдбаре
+        const container = document.getElementById('monster-list-container');
+        container.innerHTML = monsters.map(m => `
+            <a href="javascript:void(0)" onclick="loadMonster(${m.id})" class="monster-link">
+                ${m.name} <small class="text-muted float-end">CR ${m.challengeRating}</small>
+            </a>
+        `).join('');
+    } catch (e) {
+        console.error("Ошибка фильтрации:", e);
+    }
+}
+
+// Слушатели событий (вставь это в конец своего скрипта)
+document.getElementById('filter-name').addEventListener('input', updateFilters);
+document.getElementById('filter-type').addEventListener('change', updateFilters);
+document.getElementById('filter-size').addEventListener('change', updateFilters);
+document.getElementById('filter-min-cr').addEventListener('input', updateFilters);
+document.getElementById('filter-max-cr').addEventListener('input', updateFilters);
+
+    // Слушатели (Input и кнопки)
+    let timeout;
+    document.getElementById('monster-search').addEventListener('input', () => {
+        clearTimeout(timeout);
+        timeout = setTimeout(updateFilters, 300);
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            updateFilters();
+        });
+    });
+</script>
+</body>
+</html>

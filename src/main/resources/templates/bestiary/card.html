@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Фрагмент карточки -->
+<div th:fragment="monster-details" id="monster-details-container">
+    <div th:if="${selectedMonster != null}">
+        <div class="monster-header">
+            <h1 th:text="${selectedMonster.name}" class="gold">Название</h1>
+            <em th:text="${selectedMonster.size} + ' ' + ${selectedMonster.type} + ', CR: ' + ${selectedMonster.challengeRating}">
+                Размер, Тип, CR
+            </em>
+        </div>
+
+        <div class="stat-box">
+            <strong>Класс Доспеха:</strong> <span th:text="${selectedMonster.armorClass}">15</span><br>
+            <strong>Хиты:</strong> <span th:text="${selectedMonster.health}">7</span><br>
+            <strong>Скорость:</strong> <span th:text="${selectedMonster.speed}">30 футов</span>
+        </div>
+
+        <p th:text="${selectedMonster.description}"></p>
+
+        <table class="table table-dark table-bordered text-center mt-4">
+            <tr class="gold">
+                <th>СИЛ</th><th>ЛОВ</th><th>ТЕЛ</th><th>ИНТ</th><th>МУД</th><th>ХАР</th>
+            </tr>
+            <tr>
+                <td th:text="${selectedMonster.statsDto.Str + ' (' + selectedMonster.statsDto.strMod + ')'}">10</td>
+                <td th:text="${selectedMonster.statsDto.Dex + ' (' + selectedMonster.statsDto.dexMod + ')'}">10</td>
+                <td th:text="${selectedMonster.statsDto.Con + ' (' + selectedMonster.statsDto.conMod + ')'}">10</td>
+                <td th:text="${selectedMonster.statsDto.Int + ' (' + selectedMonster.statsDto.intMod + ')'}">10</td>
+                <td th:text="${selectedMonster.statsDto.Wis + ' (' + selectedMonster.statsDto.wisMod + ')'}">10</td>
+                <td th:text="${selectedMonster.statsDto.Cha + ' (' + selectedMonster.statsDto.chaMod + ')'}">10</td>
+            </tr>
+        </table>
+
+        <!-- Списки (Спасброски, Навыки, Языки и т.д.) -->
+        <div class="mt-3 border-bottom border-warning pb-3 text-light" style="font-size: 0.95rem;">
+            <div th:if="${!#lists.isEmpty(selectedMonster.savingThrows)}">
+                <strong class="gold">Спасброски: </strong> <span th:text="${#strings.listJoin(selectedMonster.savingThrows, ', ')}"></span>
+            </div>
+            <div th:if="${!#lists.isEmpty(selectedMonster.skills)}">
+                <strong class="gold">Навыки: </strong> <span th:text="${#strings.listJoin(selectedMonster.skills, ', ')}"></span>
+            </div>
+            <div th:if="${!#lists.isEmpty(selectedMonster.damageImmunities)}">
+                <strong class="gold">Иммунитет к урону: </strong> <span th:text="${#strings.listJoin(selectedMonster.damageImmunities, ', ')}"></span>
+            </div>
+            <div th:if="${!#lists.isEmpty(selectedMonster.languages)}">
+                <strong class="gold">Языки: </strong> <span th:text="${#strings.listJoin(selectedMonster.languages, ', ')}"></span>
+            </div>
+            <div>
+                <strong class="gold">Опасность: </strong> <span th:text="${selectedMonster.challengeRating} + ' (' + ${selectedMonster.experience} + ' XP)'"></span>
+            </div>
+        </div>
+
+        <!-- Действия и особенности -->
+        <div class="mt-4">
+            <div th:each="trait : ${selectedMonster.traits}" class="mb-2"><span th:text="${trait}"></span></div>
+
+            <div th:if="${!#lists.isEmpty(selectedMonster.actions)}">
+                <h3 class="border-bottom border-warning pb-1 gold">Действия</h3>
+                <div th:each="action : ${selectedMonster.actions}" class="mb-2"><span th:text="${action}"></span></div>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(selectedMonster.legendaryActions)}">
+                <h3 class="border-bottom border-warning pb-1 gold">Легендарные действия</h3>
+                <div th:each="la : ${selectedMonster.legendaryActions}" class="mb-2"><span th:text="${la}"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <div th:unless="${selectedMonster != null}" class="text-center mt-5">
+        <h3 class="text-muted">Выберите существо из списка слева</h3>
+    </div>
+</div>
+</html>

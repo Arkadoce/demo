@@ -21,18 +21,29 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(csrf -> csrf.disable())
+        http
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                        // 1. Добавляем корень "/" в список разрешенных!
+                        .requestMatchers("/", "/error", "/api/main", "/api/auth/**", "/favicon.ico").permitAll()
+
+                        // 2. Разрешаем статику и иконку (браузеры очень её любят)
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+
+                        // 3. Админка
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .defaultSuccessUrl("/api/bestiary", true)
-                        .permitAll()
+                        .loginPage("/api/auth/login")         // Страница, где лежит HTML
+                        .loginProcessingUrl("/api/auth/login") // URL, который обрабатывает POST (такой же)
+                        .defaultSuccessUrl("/api/main", true)          // Куда летим после успеха
+                        .permitAll()                           // Еще раз разрешаем всем доступ к логину
                 )
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout")
+                        .logoutSuccessUrl("/api/main")
                         .permitAll()
                 );
 

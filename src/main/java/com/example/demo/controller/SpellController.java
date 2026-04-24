@@ -25,32 +25,32 @@ public class SpellController {
         return spellService.getSpells();
     }
 
-    @GetMapping("/filter/level")
+    @GetMapping("/level")
     public List<Spell> searchSpellsByLevel(int level) {
         return spellService.getSpellsByLevel(level);
     }
 
-    @GetMapping("/filter/school")
+    @GetMapping("/school")
     public List<Spell> searchSpellsBySchool(School school) {
         return spellService.getSpellsBySchool(school);
     }
 
-    @GetMapping("/filter/damageType")
+    @GetMapping("/damageType")
     public List<Spell> searchSpellsByDamageType(DamageType damageType) {
         return spellService.getSpellsByDamageType(damageType);
     }
 
-    @GetMapping("/filter/classes")
+    @GetMapping("/classes")
     public List<Spell> searchSpellsByClasses(CharacterClass classes) {
         return spellService.getSpellsByClasses(classes);
     }
 
-    @GetMapping("/filter/savingThrow")
+    @GetMapping("/savingThrow")
     public List<Spell> searchSpellsBySavingThrow(SavingThrow savingThrow) {
         return spellService.getSpellsBySavingThrow(savingThrow);
     }
 
-    @GetMapping("/filter/components")
+    @GetMapping("/components")
     public List<Spell> searchSpellsByComponents(Components components) {
         return spellService.getSpellsByComponents(components);
     }
