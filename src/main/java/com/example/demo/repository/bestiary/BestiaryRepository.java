@@ -10,11 +10,6 @@ import java.util.List;
 
 @Repository
 public interface BestiaryRepository extends JpaRepository<Monster, Long>, JpaSpecificationExecutor<Monster> {
-    public List<Monster> findByNameContainingIgnoreCase(String name);
-    public List<Monster> findByType(MonsterType type);
-    public List<Monster> findByChallengeRating(Double challengeRating);
-    public List<Monster> findByDescriptionContainingIgnoreCase(String keyword);
-    public List<Monster> findByTypeAndChallengeRating(MonsterType type, Double challengeRating);
 }
 
 

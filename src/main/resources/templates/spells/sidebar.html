@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="spell-sidebar" class="sidebar">
+  <h5 class="gold mb-3 text-center">Книга заклинаний</h5>
+
+  <!-- Поиск по имени -->
+  <input type="text" id="filter-name" class="form-control form-control-sm bg-dark text-white border-secondary mb-2" placeholder="Поиск по названию...">
+
+  <!-- Фильтр по Классу -->
+  <div class="mb-2">
+    <small class="text-muted">Класс:</small>
+    <select id="filter-class" class="form-select form-select-sm bg-dark text-white border-secondary">
+      <option value="">Все классы</option>
+      <option value="Волшебник">Волшебник</option>
+      <option value="Жрец">Жрец</option>
+      <option value="Следопыт">Следопыт</option>
+      <option value="Бард">Бард</option>
+      <option value="Чернокнижник">Чернокнижник</option>
+    </select>
+  </div>
+
+  <!-- Фильтр по Уровню -->
+  <div class="mb-2">
+    <small class="text-muted">Уровень:</small>
+    <select id="filter-level" class="form-select form-select-sm bg-dark text-white border-secondary">
+      <option value="">Любой уровень</option>
+      <option value="0">Заговор (0)</option>
+      <option th:each="i : ${#numbers.sequence(1, 9)}" th:value="${i}" th:text="${i} + '-й уровень'"></option>
+    </select>
+  </div>
+
+  <!-- Фильтр по Школе -->
+  <div class="mb-3">
+    <small class="text-muted">Школа:</small>
+    <select id="filter-school" class="form-select form-select-sm bg-dark text-white border-secondary">
+      <option value="">Все школы</option>
+      <option value="EVOCATION">Воплощение</option>
+      <option value="NECROMANCY">Некромантия</option>
+      <option value="ABJURATION">Ограждение</option>
+      <option value="ILLUSION">Иллюзия</option>
+      <!-- Добавь остальные школы -->
+    </select>
+  </div>
+
+  <hr class="border-secondary">
+
+  <!-- Список -->
+  <div id="spell-list-container">
+    <div th:each="s : ${spells}">
+      <a href="javascript:void(0)" th:onclick="|loadSpell(${s.id})|" class="monster-link">
+        <span th:text="${s.name}"></span>
+        <small class="text-muted float-end" th:text="${s.level == 0 ? 'заг.' : s.level}"></small>
+      </a>
+    </div>
+  </div>
+</div>
+</html>

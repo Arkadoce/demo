@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="spell-details" id="spell-details-container">
+    <div th:if="${selectedSpell != null}">
+        <div class="spell-header border-bottom border-warning mb-3 pb-2">
+            <h1 th:text="${selectedSpell.name}" class="gold mb-0">Название заклинания</h1>
+            <em class="text-muted">
+                <!-- Форматируем уровень: 0 -> Заговор, 1 -> 1 уровень... -->
+                <span th:text="${selectedSpell.level == 0 ? 'Заговор' : selectedSpell.level + '-й уровень'}"></span>,
+                <span th:text="${selectedSpell.school}">Школа</span>
+                <span th:if="${selectedSpell.isRitual}"> (ритуал)</span>
+            </em>
+        </div>
+
+        <div class="spell-meta mb-4">
+            <div><strong>Время накладывания:</strong> <span th:text="${selectedSpell.castingTime}"></span></div>
+            <div><strong>Дистанция:</strong> <span th:text="${selectedSpell.distance}"></span></div>
+            <div>
+                <strong>Компоненты:</strong>
+                <span th:text="${#strings.listJoin(selectedSpell.components, ', ')}"></span>
+            </div>
+            <div>
+                <strong>Длительность:</strong>
+                <span th:if="${selectedSpell.isConcentration}" class="text-info">Концентрация, </span>
+                <span th:text="${selectedSpell.duration}"></span>
+            </div>
+        </div>
+
+        <!-- Описание (переносим строки, если в тексте есть \n) -->
+        <div class="spell-description" style="white-space: pre-line;">
+            <p th:text="${selectedSpell.description}"></p>
+        </div>
+
+        <!-- Информация для Мастера -->
+        <div class="mt-4 pt-3 border-top border-secondary small">
+            <div class="mb-1">
+                <strong class="gold">Классы:</strong>
+                <span th:text="${#strings.listJoin(selectedSpell.classNames, ', ')}"></span>
+            </div>
+            <div th:if="${selectedSpell.damageType != null}">
+                <strong class="gold">Тип урона:</strong> <span th:text="${selectedSpell.damageType}"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Заглушка, если ничего не выбрано -->
+    <div th:unless="${selectedSpell != null}" class="text-center mt-5 text-muted">
+        <h3>Выберите заклинание из списка слева</h3>
+        <p>Используйте фильтры, чтобы найти нужное по классу или уровню.</p>
+    </div>
+</div>
+</html>
