@@ -14,5 +14,7 @@
     <include file="db/changelog/changes/classes/006-subclasses.sql" relativeToChangelogFile="false"/>
     <include file="db/changelog/changes/registry/007-users.sql" relativeToChangelogFile="false"/>
     <include file="db/changelog/changes/data/008-bestiary-content.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/data/009-classes-names-content.sql" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/data/010-spells-test-content.sql" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

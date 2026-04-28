@@ -1,14 +1,22 @@
 CREATE TABLE spells (
     id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    level INT NOT NULL CHECK (level >= 0 AND level <= 9),
+    casting_time VARCHAR(100) NOT NULL,
+    distance VARCHAR(100) NOT NULL,
+    duration VARCHAR(100) NOT NULL,
+    level INT NOT NULL DEFAULT 0,
+
+    components TEXT[],
+    races TEXT[],
+
     school VARCHAR(50) NOT NULL,
-    is_ritual BOOLEAN NOT NULL,
-    is_concentration BOOLEAN NOT NULL,
-    damage_type VARCHAR(50) NOT NULL,
+    damage_type VARCHAR(50),
     saving_throw VARCHAR(50),
-    components VARCHAR(50)
+
+    is_ritual BOOLEAN DEFAULT false,
+    is_concentration BOOLEAN DEFAULT false,
+    is_cantrip BOOLEAN DEFAULT false
 );
 
 CREATE TABLE spell_classes (

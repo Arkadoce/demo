@@ -15,22 +15,18 @@ public class MonsterSpecification {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            // 1. Поиск по имени (игнорируя регистр)
             if (name != null && !name.isBlank()) {
                 predicates.add(cb.like(cb.lower(root.get("name")), "%" + name.toLowerCase() + "%"));
             }
 
-            // 2. Фильтр по Типу (строгое совпадение Enum)
             if (type != null && !type.isBlank()) {
                 predicates.add(cb.equal(root.get("type"), MonsterType.valueOf(type)));
             }
 
-            // 3. Фильтр по Размеру
             if (size != null && !size.isBlank()) {
                 predicates.add(cb.equal(root.get("size"), CreatureSize.valueOf(size)));
             }
 
-            // 4. Фильтр по Опасности (CR) - От и До! (Это очень удобно для Мастера)
             if (minCr != null) {
                 predicates.add(cb.greaterThanOrEqualTo(root.get("challengeRating"), minCr));
             }
@@ -38,7 +34,6 @@ public class MonsterSpecification {
                 predicates.add(cb.lessThanOrEqualTo(root.get("challengeRating"), maxCr));
             }
 
-            // Собираем все условия через AND
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }

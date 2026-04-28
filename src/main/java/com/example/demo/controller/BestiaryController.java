@@ -5,6 +5,7 @@ import com.example.demo.entity.bestiary.Monster;
 import com.example.demo.entity.model.CreatureSize;
 import com.example.demo.entity.model.MonsterType;
 import com.example.demo.service.BestiaryService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/bestiary")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class BestiaryController {
 
     private final BestiaryService bestiaryService;

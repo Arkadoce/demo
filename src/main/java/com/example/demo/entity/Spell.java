@@ -6,16 +6,20 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "spells")
 @Getter
 @Setter
+@NoArgsConstructor @AllArgsConstructor
 public class Spell {
 
     @Id
@@ -25,9 +29,18 @@ public class Spell {
     @NotBlank
     private String name;
     @NotBlank
+    @Column(columnDefinition = "TEXT")
     private String description;
+    @NotBlank
+    private String castingTime;
+    @NotBlank
+    private String distance;
+    @NotBlank
+    private String duration;
+
     @Min(0) @Max(9)
     private int level;
+
     @ManyToMany
     @JoinTable(
         name = "spell_classes",
@@ -36,17 +49,20 @@ public class Spell {
     )
     private Set<CharacterClass> classes = new HashSet<>();
     @NotNull
+    @Column(columnDefinition = "text[]")
+    private List<String> components;
+    @Column(columnDefinition = "text[]")
+    private List<String> races;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     private School school;
-    private boolean isRitual;
-    private boolean isConcentration;
-    @NotNull
     @Enumerated(EnumType.STRING)
     private DamageType damageType;
     @Enumerated(EnumType.STRING)
     private SavingThrow savingThrow;
-    @Enumerated(EnumType.STRING)
-    private Components components;
 
-    public Spell() {}
+    private boolean isRitual;
+    private boolean isConcentration;
+
 }

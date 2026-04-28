@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Заклинания - D&D Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Стили из бестиария, можно просто скопировать -->
+    <style>
+        body { background-color: #1a1a1a; color: #e0e0e0; height: 100vh; display: flex; flex-direction: column; }
+        .main-container { display: flex; flex: 1; overflow: hidden; }
+        .sidebar { width: 300px; background: #252525; border-right: 2px solid #d4af37; overflow-y: auto; padding: 10px; }
+        .monster-link { display: block; padding: 8px 10px; color: #ccc; text-decoration: none; border-bottom: 1px solid #333; font-size: 0.9rem; }
+        .monster-link:hover { background: #333; color: #d4af37; }
+        .content { flex: 1; padding: 40px; overflow-y: auto; background: #1a1a1a; }
+        .gold { color: #d4af37; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark border-bottom border-warning">
+    <div class="container-fluid">
+        <a class="navbar-brand gold" href="/">⬅ На главную</a>
+        <span class="navbar-text text-warning">Книга заклинаний</span>
+    </div>
+</nav>
+
+<div class="main-container">
+    <div th:replace="~{spells/sidebar :: spell-sidebar}"></div>
+
+    <div class="content" id="spell-details-container">
+        <div th:replace="~{spells/card :: spell-details}"></div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    // Загрузка конкретного заклинания
+    async function loadSpell(id) {
+        try {
+            const response = await fetch(`/spells?id=${id}&fragment=details`);
+            const html = await response.text();
+            document.getElementById('spell-details-container').innerHTML = html;
+            window.history.pushState({}, '', `/spells?id=${id}`);
+        } catch (e) { console.error(e); }
+    }
+
+    // Фильтрация
+    async function updateFilters() {
+        const name = document.getElementById('filter-name').value;
+        const level = document.getElementById('filter-level').value;
+        const characterClass = document.getElementById('filter-class').value;
+        const school = document.getElementById('filter-school').value;
+
+        const params = new URLSearchParams();
+        if (name) params.append('name', name);
+        if (level) params.append('level', level);
+        if (characterClass) params.append('characterClass', characterClass);
+        if (school) params.append('school', school);
+
+        try {
+            const response = await fetch('/api/spells/filter?' + params.toString());
+            const spells = await response.json();
+
+            const container = document.getElementById('spell-list-container');
+            container.innerHTML = spells.map(s => `
+                <a href="javascript:void(0)" onclick="loadSpell(${s.id})" class="monster-link">
+                    ${s.name} <small class="text-muted float-end">${s.level === 0 ? 'заг.' : s.level}</small>
+                </a>
+            `).join('');
+        } catch (e) { console.error(e); }
+    }
+
+    // Слушатели
+    document.getElementById('filter-name').addEventListener('input', updateFilters);
+    document.getElementById('filter-level').addEventListener('change', updateFilters);
+    document.getElementById('filter-class').addEventListener('change', updateFilters);
+    document.getElementById('filter-school').addEventListener('change', updateFilters);
+</script>
+</body>
+</html>
